@@ -50,15 +50,28 @@ export async function POST(request: Request) {
   }
 
   const openai = getOpenAIClient();
-  const completion = await openai.chat.completions.create({
-    model: MODEL_NAME,
-    stream: true,
-    stream_options: { include_usage: true },
-    messages: [
-      { role: "system", content: buildSystemPrompt(parsed.data.type) },
-      { role: "user", content: parsed.data.prompt },
-    ],
-  });
+  let completion;
+
+  try {
+    completion = await openai.chat.completions.create({
+      model: MODEL_NAME,
+      stream: true,
+      stream_options: { include_usage: true },
+      messages: [
+        { role: "system", content: buildSystemPrompt(parsed.data.type) },
+        { role: "user", content: parsed.data.prompt },
+      ],
+    });
+  } catch {
+    completion = await openai.chat.completions.create({
+      model: MODEL_NAME,
+      stream: true,
+      messages: [
+        { role: "system", content: buildSystemPrompt(parsed.data.type) },
+        { role: "user", content: parsed.data.prompt },
+      ],
+    });
+  }
 
   let output = "";
   let tokensUsed: number | null = null;

@@ -83,7 +83,7 @@ export default function HistoryPage() {
         />
         <Input type="date" value={from} onChange={(event) => setFrom(event.target.value)} />
         <Input type="date" value={to} onChange={(event) => setTo(event.target.value)} />
-        <Button variant="outline" onClick={() => { setPage(1); load(); }}>
+        <Button variant="outline" onClick={() => setPage(1)}>
           Apply filters
         </Button>
       </div>
